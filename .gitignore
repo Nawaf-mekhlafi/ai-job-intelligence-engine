@@ -1,0 +1,18 @@
+# Virtual Environment
+venv/
+env/
+
+# Environment Variables & Secrets
+.env
+
+# DuckDB Database Files
+*.duckdb
+*.duckdb.wal
+
+# Python Cache & Artifacts
+__pycache__/
+*.pyc
+*.pyo
+
+# OS generated files
+.DS_Store
