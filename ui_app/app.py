@@ -4,14 +4,12 @@ import sys
 import os
 from io import BytesIO
 
-# إعداد مسار النظام للوصول للمجلدات الأخرى
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from utils.document_parser import DocumentParser
 from utils.docx_generator import DocumentGenerator
 from ai_engine.ai_agent import JobMatchAgent
 
-# إعدادات الصفحة الأساسية
 st.set_page_config(
     page_title="AI Job Intelligence Engine",
     layout="wide",
@@ -120,7 +118,6 @@ def main():
 
     if st.button("Initialize Semantic Analysis"):
         if uploaded_file and job_input:
-            # الحماية من الروابط وإجبار المستخدم على النص فقط
             if "http://" in job_input.lower() or "https://" in job_input.lower() or "www." in job_input.lower():
                 st.error("🚫 **URL Detected:** To ensure 100% accuracy and avoid website security blocks, please copy and paste the **RAW TEXT** of the job description instead of a link.")
             else:
@@ -134,7 +131,6 @@ def main():
         else: 
             st.warning("Please provide both a CV and a Job Description.")
 
-    # عرض النتائج
     if st.session_state.analysis_results:
         res = st.session_state.analysis_results
         st.markdown("<hr style='border-color: rgba(255,255,255,0.1);'>", unsafe_allow_html=True)
