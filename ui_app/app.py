@@ -28,13 +28,12 @@ def inject_aurora_glassmorphism():
     
     css_rules = """
     /* Clean UI: Hide all Streamlit clutter */
-    [data-testid="stToolbar"], [data-testid="stHeader"], header, footer, #MainMenu, .stDeployButton {display: none !important; visibility: hidden !important;}
+    [data-testid="stToolbar"], header, footer, #MainMenu, .stDeployButton {display: none !important; visibility: hidden !important;}
     a.header-anchor {display: none !important;}
     
     html, body, [class*="css"] { font-family: 'Plus Jakarta Sans', sans-serif !important; }
     
-    /* Cloud Background Fix: Added stAppViewContainer to support latest Streamlit */
-    .stApp, [data-testid="stAppViewContainer"], [data-testid="stAppViewBlockContainer"] { 
+    .stApp { 
         background-color: #030712 !important; 
         background-image: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%), radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.12) 0px, transparent 50%) !important; 
         color: #F8FAFC !important; 
@@ -117,8 +116,7 @@ def main():
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # التعديل البرمجي لضمان عرض الزر بشكل كامل وأفقي
-    if st.button("Initialize Semantic Analysis", use_container_width=True):
+    if st.button("Initialize Semantic Analysis"):
         if uploaded_file and job_input:
             if "http://" in job_input.lower() or "https://" in job_input.lower() or "www." in job_input.lower():
                 st.error("🚫 **URL Detected:** To ensure 100% accuracy and avoid website security blocks, please copy and paste the **RAW TEXT** of the job description instead of a link.")
@@ -192,17 +190,16 @@ def main():
 
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # 5. Cover Letter (Robust formatting using white-space: pre-wrap)
+        # 5. Cover Letter
         st.markdown("<h3><i class='fa-solid fa-envelope-open-text fa-fw'></i> Enterprise Cover Letter</h3>", unsafe_allow_html=True)
         raw_letter = res.get('cover_letter_draft', '')
         
-        # Using white-space: pre-wrap guarantees that any \n returned by the LLM is respected perfectly by the browser
         st.markdown(f"<div class='glass-card' style='line-height: 1.8; font-size: 1.05rem; color: #E2E8F0; padding: 2rem; white-space: pre-wrap;'>{raw_letter}</div>", unsafe_allow_html=True)
         
         st.download_button(
             label="📥 Download as Word Document",
             data=DocumentGenerator.create_cover_letter_docx(raw_letter),
-            file_name="JobFit_Cover_Letter.docx",
+            file_name="Enterprise_Cover_Letter.docx",
             mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
         )
 
