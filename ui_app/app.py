@@ -190,10 +190,11 @@ def main():
 
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # 5. Cover Letter
+        # 5. Cover Letter (Robust formatting using white-space: pre-wrap)
         st.markdown("<h3><i class='fa-solid fa-envelope-open-text fa-fw'></i> Enterprise Cover Letter</h3>", unsafe_allow_html=True)
         raw_letter = res.get('cover_letter_draft', '')
         
+        # Using white-space: pre-wrap guarantees that any \n returned by the LLM is respected perfectly by the browser
         st.markdown(f"<div class='glass-card' style='line-height: 1.8; font-size: 1.05rem; color: #E2E8F0; padding: 2rem; white-space: pre-wrap;'>{raw_letter}</div>", unsafe_allow_html=True)
         
         st.download_button(
