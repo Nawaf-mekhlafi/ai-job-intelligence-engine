@@ -17,9 +17,6 @@ st.set_page_config(
 )
 
 def inject_aurora_glassmorphism():
-    """
-    Injects the Enterprise Aurora Glassmorphism UI and hides all Streamlit default elements.
-    """
     imports = """
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -28,12 +25,13 @@ def inject_aurora_glassmorphism():
     
     css_rules = """
     /* Clean UI: Hide all Streamlit clutter */
-    [data-testid="stToolbar"], header, footer, #MainMenu, .stDeployButton {display: none !important; visibility: hidden !important;}
+    [data-testid="stToolbar"], [data-testid="stHeader"], footer, #MainMenu, .stDeployButton {display: none !important; visibility: hidden !important;}
     a.header-anchor {display: none !important;}
     
     html, body, [class*="css"] { font-family: 'Plus Jakarta Sans', sans-serif !important; }
     
-    .stApp { 
+    /* Target New Streamlit App Container for Gradient Background */
+    .stApp, [data-testid="stAppViewContainer"], [data-testid="stAppViewBlockContainer"] { 
         background-color: #030712 !important; 
         background-image: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%), radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.12) 0px, transparent 50%) !important; 
         color: #F8FAFC !important; 
@@ -46,6 +44,7 @@ def inject_aurora_glassmorphism():
     div[data-testid="stFileUploader"], div[data-testid="stTextArea"], .glass-card { 
         background: rgba(17, 24, 39, 0.55) !important; 
         backdrop-filter: blur(24px) !important; 
+        -webkit-backdrop-filter: blur(24px) !important;
         border: 1px solid rgba(255, 255, 255, 0.08) !important; 
         border-radius: 16px !important; 
         padding: 1.5rem !important; 
@@ -53,12 +52,14 @@ def inject_aurora_glassmorphism():
         margin-bottom: 1rem;
     }
     
-    /* Fix for invisible text in file uploader */
+    /* Force inner components to be transparent to show glass effect */
+    div[data-testid="stFileUploader"] > section, div[data-testid="stTextArea"] > div { background-color: transparent !important; }
+    
+    [data-testid="stFileUploadDropzone"] { background-color: transparent !important; }
     [data-testid="stFileUploadDropzone"] div { color: #94A3B8 !important; }
     [data-testid="stFileUploadDropzone"] small { color: #64748B !important; }
     [data-testid="stFileUploadDropzone"] button { color: #F8FAFC !important; border: 1px solid rgba(255,255,255,0.2) !important; background: rgba(255,255,255,0.05) !important; }
     
-    /* Fix for text area input */
     .stTextArea > div > div > textarea { background-color: transparent !important; border: none !important; color: #F8FAFC !important; }
     .stTextArea > div > div > textarea::placeholder { color: #64748B !important; opacity: 1 !important; }
     
@@ -75,15 +76,16 @@ def inject_aurora_glassmorphism():
         transition: all 0.3s ease !important;
     }
     div[data-testid="stButton"] > button:hover { transform: translateY(-2px) !important; box-shadow: 0 8px 25px rgba(147, 51, 234, 0.4) !important; }
+    div[data-testid="stButton"] > button * { color: #FFFFFF !important; }
     
     div[data-testid="stDownloadButton"] > button { background: rgba(255, 255, 255, 0.1) !important; border: 1px solid rgba(255, 255, 255, 0.2) !important; color: #F8FAFC !important; }
+    div[data-testid="stDownloadButton"] > button * { color: #F8FAFC !important; }
     .fa-fw { margin-right: 8px; color: #A855F7; }
     </style>
     """
     st.markdown(imports + css_rules.replace('\n', ''), unsafe_allow_html=True)
 
 def render_gauge_chart(score: int):
-    """Renders the semantic match score gauge chart."""
     if score <= 30: bar_color = "#EF4444"
     elif score <= 70: bar_color = "#F59E0B"
     else: bar_color = "#10B981"
@@ -136,7 +138,6 @@ def main():
         st.markdown("<hr style='border-color: rgba(255,255,255,0.1);'>", unsafe_allow_html=True)
         st.markdown("<h2><i class='fa-solid fa-chart-pie fa-fw'></i> Diagnostic Results</h2>", unsafe_allow_html=True)
         
-        # 1. Score & Summary
         c1, c2 = st.columns([1, 1.5], gap="large")
         with c1: 
             st.markdown("<div style='text-align: center; color: #94A3B8; font-weight: 600;'>Semantic Match Score</div>", unsafe_allow_html=True)
@@ -147,7 +148,6 @@ def main():
             
         st.markdown("<br>", unsafe_allow_html=True)
             
-        # 2. Keywords
         k1, k2 = st.columns(2, gap="large")
         with k1:
             st.markdown("<h4><i class='fa-solid fa-check-double fa-fw' style='color:#10B981;'></i> Verified Skills</h4>", unsafe_allow_html=True)
@@ -160,7 +160,6 @@ def main():
             
         st.markdown("<br>", unsafe_allow_html=True)
         
-        # 3. CV Improvements
         g1, g2 = st.columns(2, gap="large")
         with g1:
             st.markdown("<h4><i class='fa-solid fa-shield-halved fa-fw'></i> ATS CV Improvements</h4>", unsafe_allow_html=True)
@@ -173,7 +172,6 @@ def main():
 
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # 4. Educational Router & Reverse Jobs
         r1, r2 = st.columns(2, gap="large")
         with r1:
             st.markdown("<h4><i class='fa-solid fa-map-location-dot fa-fw'></i> Smart Educational Router</h4>", unsafe_allow_html=True)
@@ -190,17 +188,15 @@ def main():
 
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # 5. Cover Letter (Robust formatting using white-space: pre-wrap)
         st.markdown("<h3><i class='fa-solid fa-envelope-open-text fa-fw'></i> Enterprise Cover Letter</h3>", unsafe_allow_html=True)
         raw_letter = res.get('cover_letter_draft', '')
         
-        # Using white-space: pre-wrap guarantees that any \n returned by the LLM is respected perfectly by the browser
         st.markdown(f"<div class='glass-card' style='line-height: 1.8; font-size: 1.05rem; color: #E2E8F0; padding: 2rem; white-space: pre-wrap;'>{raw_letter}</div>", unsafe_allow_html=True)
         
         st.download_button(
             label="📥 Download as Word Document",
             data=DocumentGenerator.create_cover_letter_docx(raw_letter),
-            file_name="Enterprise_Cover_Letter.docx",
+            file_name="JobFit_Cover_Letter.docx",
             mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
         )
 
