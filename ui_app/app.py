@@ -30,8 +30,8 @@ def inject_aurora_glassmorphism():
     
     html, body, [class*="css"] { font-family: 'Plus Jakarta Sans', sans-serif !important; }
     
-    /* Target New Streamlit App Container for Gradient Background */
-    .stApp, [data-testid="stAppViewContainer"], [data-testid="stAppViewBlockContainer"] { 
+    /* Background Fix for New Streamlit */
+    .stApp, [data-testid="stAppViewContainer"] { 
         background-color: #030712 !important; 
         background-image: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%), radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.12) 0px, transparent 50%) !important; 
         color: #F8FAFC !important; 
@@ -40,11 +40,10 @@ def inject_aurora_glassmorphism():
     
     h1, h2, h3, h4, p, span, label, li { font-family: 'Plus Jakarta Sans', sans-serif !important; color: #F8FAFC !important; }
     
-    /* Glassmorphism Cards & Inputs */
+    /* Glassmorphism Cards & Inputs - Reverted to the beautiful first design */
     div[data-testid="stFileUploader"], div[data-testid="stTextArea"], .glass-card { 
         background: rgba(17, 24, 39, 0.55) !important; 
         backdrop-filter: blur(24px) !important; 
-        -webkit-backdrop-filter: blur(24px) !important;
         border: 1px solid rgba(255, 255, 255, 0.08) !important; 
         border-radius: 16px !important; 
         padding: 1.5rem !important; 
@@ -52,20 +51,12 @@ def inject_aurora_glassmorphism():
         margin-bottom: 1rem;
     }
     
-    /* Force inner components to be transparent to show glass effect */
-    div[data-testid="stFileUploader"] > section, div[data-testid="stTextArea"] > div { background-color: transparent !important; }
-    
-    [data-testid="stFileUploadDropzone"] { background-color: transparent !important; }
-    [data-testid="stFileUploadDropzone"] div { color: #94A3B8 !important; }
-    [data-testid="stFileUploadDropzone"] small { color: #64748B !important; }
-    [data-testid="stFileUploadDropzone"] button { color: #F8FAFC !important; border: 1px solid rgba(255,255,255,0.2) !important; background: rgba(255,255,255,0.05) !important; }
-    
+    /* Text Area Styling */
     .stTextArea > div > div > textarea { background-color: transparent !important; border: none !important; color: #F8FAFC !important; }
-    .stTextArea > div > div > textarea::placeholder { color: #64748B !important; opacity: 1 !important; }
+    .stTextArea > div > div > textarea::placeholder { color: #64748B !important; }
     
-    /* Premium Buttons */
-    div[data-testid="stButton"] > button { 
-        width: 100%; 
+    /* Primary Full-Width Button Style */
+    div.stButton > button { 
         background: linear-gradient(135deg, #4F46E5, #9333EA) !important; 
         color: #FFFFFF !important; 
         border: none !important; 
@@ -75,11 +66,13 @@ def inject_aurora_glassmorphism():
         box-shadow: 0 4px 15px rgba(147, 51, 234, 0.25) !important; 
         transition: all 0.3s ease !important;
     }
-    div[data-testid="stButton"] > button:hover { transform: translateY(-2px) !important; box-shadow: 0 8px 25px rgba(147, 51, 234, 0.4) !important; }
-    div[data-testid="stButton"] > button * { color: #FFFFFF !important; }
+    div.stButton > button:hover { transform: translateY(-2px) !important; box-shadow: 0 8px 25px rgba(147, 51, 234, 0.4) !important; }
+    div.stButton > button * { color: #FFFFFF !important; }
     
+    /* Download Button Style */
     div[data-testid="stDownloadButton"] > button { background: rgba(255, 255, 255, 0.1) !important; border: 1px solid rgba(255, 255, 255, 0.2) !important; color: #F8FAFC !important; }
     div[data-testid="stDownloadButton"] > button * { color: #F8FAFC !important; }
+    
     .fa-fw { margin-right: 8px; color: #A855F7; }
     </style>
     """
@@ -118,7 +111,8 @@ def main():
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    if st.button("Initialize Semantic Analysis"):
+    # إضافة الخاصية use_container_width=True لضمان العرض الكامل للزر
+    if st.button("Initialize Semantic Analysis", use_container_width=True):
         if uploaded_file and job_input:
             if "http://" in job_input.lower() or "https://" in job_input.lower() or "www." in job_input.lower():
                 st.error("🚫 **URL Detected:** To ensure 100% accuracy and avoid website security blocks, please copy and paste the **RAW TEXT** of the job description instead of a link.")
