@@ -11,7 +11,7 @@ from utils.docx_generator import DocumentGenerator
 from ai_engine.ai_agent import JobMatchAgent
 
 st.set_page_config(
-    page_title="AI Job Intelligence Engine",
+    page_title="JobFit AI",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
@@ -102,8 +102,8 @@ def main():
     if 'analysis_results' not in st.session_state: 
         st.session_state.analysis_results = None
     
-    st.markdown("<br><br><h1><i class='fa-solid fa-layer-group fa-fw'></i> The AI Job Intelligence Engine</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='color: #94A3B8; font-size: 1.1rem;'>Enterprise-Grade Candidate Analysis & ATS Optimization System</p>", unsafe_allow_html=True)
+    st.markdown("<br><br><h1><i class='fa-solid fa-bolt fa-fw'></i> JobFit AI</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='color: #94A3B8; font-size: 1.1rem;'>Smart CV Analysis & ATS Optimization System</p>", unsafe_allow_html=True)
     st.markdown("<br>", unsafe_allow_html=True)
     
     col1, col2 = st.columns(2, gap="large")
