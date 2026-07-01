@@ -17,57 +17,64 @@ st.set_page_config(
 )
 
 def inject_aurora_glassmorphism():
-    st.markdown("""
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-    
-    [data-testid="stToolbar"], header, footer, #MainMenu {display: none !important; visibility: hidden !important;}
-    a.header-anchor {display: none !important;}
-    
-    html, body, [class*="css"] { font-family: 'Plus Jakarta Sans', sans-serif !important; }
-    
-    .stApp, [data-testid="stAppViewContainer"], [data-testid="stAppViewBlockContainer"] { 
-        background-color: #030712 !important; 
-        background-image: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%), radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.12) 0px, transparent 50%) !important; 
-        color: #F8FAFC !important; 
-        background-attachment: fixed !important;
-    }
-    
-    h1, h2, h3, h4, p, span, label, li { font-family: 'Plus Jakarta Sans', sans-serif !important; color: #F8FAFC !important; }
-    
-    div[data-testid="stFileUploader"], div[data-testid="stTextArea"], .glass-card { 
-        background: rgba(17, 24, 39, 0.45) !important; 
-        backdrop-filter: blur(20px) !important; 
-        -webkit-backdrop-filter: blur(20px) !important;
-        border: 1px solid rgba(255, 255, 255, 0.08) !important; 
-        border-radius: 16px !important; 
-        padding: 1.5rem !important; 
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important; 
-        margin-bottom: 1rem;
-    }
-    
-    .stTextArea textarea { color: #F8FAFC !important; }
-    
-    div.stButton, div[data-testid="stButton"] { width: 100% !important; }
-    div[data-testid="stButton"] > button { 
-        width: 100% !important; 
-        display: block !important;
-        background: linear-gradient(135deg, #4F46E5, #9333EA) !important; 
-        color: #FFFFFF !important; 
-        border: none !important; 
-        border-radius: 12px !important; 
-        font-weight: 700 !important; 
-        padding: 1rem 0 !important; 
-        box-shadow: 0 4px 15px rgba(147, 51, 234, 0.25) !important; 
-        transition: all 0.3s ease !important;
-    }
-    div[data-testid="stButton"] > button:hover { transform: translateY(-2px) !important; box-shadow: 0 8px 25px rgba(147, 51, 234, 0.4) !important; }
-    
-    div[data-testid="stDownloadButton"] > button { background: rgba(255, 255, 255, 0.1) !important; border: 1px solid rgba(255, 255, 255, 0.2) !important; color: #F8FAFC !important; }
-    .fa-fw { margin-right: 8px; color: #A855F7; }
-    </style>
-    """, unsafe_allow_html=True)
+    # لاحظ هنا: لا توجد أي مسافات قبل الأكواد لكي لا تتحول إلى نص مقروء
+    st.markdown(
+"""
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+[data-testid="stToolbar"], header, footer {display: none !important; visibility: hidden !important;}
+
+html, body, [class*="css"] { font-family: 'Plus Jakarta Sans', sans-serif !important; }
+
+/* الخلفية الكونية */
+.stApp, [data-testid="stAppViewContainer"], [data-testid="stAppViewBlockContainer"] { 
+    background-color: #030712 !important; 
+    background-image: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%), radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.12) 0px, transparent 50%) !important; 
+    color: #F8FAFC !important; 
+    background-attachment: fixed !important;
+}
+
+h1, h2, h3, h4, p, span, label, li { font-family: 'Plus Jakarta Sans', sans-serif !important; color: #F8FAFC !important; }
+
+/* 1. السحر هنا: تغليف المربعات بالزجاج من الخارج فقط لحمايتها من الانهيار */
+[data-testid="stFileUploader"], [data-testid="stTextArea"], .glass-card { 
+    background: rgba(17, 24, 39, 0.55) !important; 
+    backdrop-filter: blur(16px) !important; 
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important; 
+    border-radius: 16px !important; 
+    padding: 1.5rem !important; 
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important; 
+    margin-bottom: 1rem;
+}
+
+/* 2. إصلاح مربع النص ليكون شفافاً وجميلاً */
+.stTextArea textarea { background-color: transparent !important; border: 1px solid rgba(255, 255, 255, 0.2) !important; color: #F8FAFC !important; border-radius: 8px !important; }
+.stTextArea textarea::placeholder { color: #64748B !important; }
+
+/* 3. الزر العريض الفخم */
+div[data-testid="stButton"] > button { 
+    width: 100% !important;
+    display: block !important;
+    background: linear-gradient(135deg, #4F46E5, #9333EA) !important; 
+    color: #FFFFFF !important; 
+    border: none !important; 
+    border-radius: 12px !important; 
+    font-weight: 700 !important; 
+    padding: 1rem 0 !important; 
+    box-shadow: 0 4px 15px rgba(147, 51, 234, 0.25) !important; 
+    transition: all 0.3s ease !important;
+}
+div[data-testid="stButton"] > button:hover { transform: translateY(-2px) !important; box-shadow: 0 8px 25px rgba(147, 51, 234, 0.4) !important; }
+
+div[data-testid="stDownloadButton"] > button { background: rgba(255, 255, 255, 0.1) !important; border: 1px solid rgba(255, 255, 255, 0.2) !important; color: #F8FAFC !important; }
+.fa-fw { margin-right: 8px; color: #A855F7; }
+</style>
+""", 
+        unsafe_allow_html=True
+    )
 
 def render_gauge_chart(score: int):
     if score <= 30: bar_color = "#EF4444"
